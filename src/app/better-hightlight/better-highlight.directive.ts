@@ -1,4 +1,4 @@
-import { Directive, Renderer2, OnInit, ElementRef } from '@angular/core';
+import { Directive, Renderer2, OnInit, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appBetterHighlight]'
@@ -8,7 +8,7 @@ export class BetterHighlightDirective implements OnInit{
   constructor(private elRef: ElementRef,private renderer: Renderer2) { }
 
   ngOnInit():void {
-    this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
+    // this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
   } // better approach of accessing the DOM
   /*
   Why?
@@ -19,6 +19,15 @@ export class BetterHighlightDirective implements OnInit{
   i might get an error in some circumstances.
   Now to be honest, in most circumstances i probably don't and i probably also know
   if my app is going to run in the browser or not, still it is a better ractice to use the renderer for DOM access
+  and to use the methods the rederer provides to access the DOM.
   */
+
+  @HostListener('mouseenter') mouseover(eventData: Event) {
+    this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
+  }
+
+  @HostListener('mouseleave') mouseleave(eventData: Event) {
+    this.renderer.setStyle(this.elRef.nativeElement, 'background-color', 'transparent');
+  }
 
 }
